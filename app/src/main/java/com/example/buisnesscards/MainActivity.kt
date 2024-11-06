@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -87,12 +86,18 @@ class MainActivity : ComponentActivity() {
                 )
                 Spacer(modifier = Modifier.height(1.dp))
 
-                val text = remember { mutableStateOf("") }
+                // Variables para recordar los valores introducidos
+                val nombre = remember { mutableStateOf("") }
+                val apellido = remember { mutableStateOf("") }
+                val empresa = remember { mutableStateOf("") }
+                val correo = remember { mutableStateOf("") }
+                val telefono = remember { mutableStateOf("") }
+                val puesto = remember { mutableStateOf("") }
 
                 // Nombre
                 TextField(
-                    value = "",
-                    onValueChange = {},
+                    value = nombre.value,
+                    onValueChange = { nombre.value = it },
                     label = { Text("Nombre") },
                     modifier = Modifier
                         .padding(horizontal = 40.dp)
@@ -105,15 +110,15 @@ class MainActivity : ComponentActivity() {
                 )
                 Spacer(modifier = Modifier.height(10.dp))
 
-                // Apellido con CheckBox
+                // Apellido con Checkbox
                 Row(
                     modifier = Modifier
                         .padding(horizontal = 40.dp)
                         .fillMaxWidth()
                 ) {
                     TextField(
-                        value = "",
-                        onValueChange = {},
+                        value = apellido.value,
+                        onValueChange = { apellido.value = it },
                         label = { Text("Apellido") },
                         modifier = Modifier
                             .weight(1f)
@@ -133,15 +138,15 @@ class MainActivity : ComponentActivity() {
                 }
                 Spacer(modifier = Modifier.height(10.dp))
 
-                // Empresa con CheckBox
+                // Empresa con Checkbox
                 Row(
                     modifier = Modifier
                         .padding(horizontal = 40.dp)
                         .fillMaxWidth()
                 ) {
                     TextField(
-                        value = "",
-                        onValueChange = {},
+                        value = empresa.value,
+                        onValueChange = { empresa.value = it },
                         label = { Text("Empresa") },
                         modifier = Modifier
                             .weight(1f)
@@ -161,15 +166,15 @@ class MainActivity : ComponentActivity() {
                 }
                 Spacer(modifier = Modifier.height(10.dp))
 
-                // Correo con CheckBox
+                // Correo con Checkbox
                 Row(
                     modifier = Modifier
                         .padding(horizontal = 40.dp)
                         .fillMaxWidth()
                 ) {
                     TextField(
-                        value = "",
-                        onValueChange = {},
+                        value = correo.value,
+                        onValueChange = { correo.value = it },
                         label = { Text("Correo") },
                         modifier = Modifier
                             .weight(1f)
@@ -189,15 +194,15 @@ class MainActivity : ComponentActivity() {
                 }
                 Spacer(modifier = Modifier.height(10.dp))
 
-                // Telefono con CheckBox
+                // Telefono con Checkbox
                 Row(
                     modifier = Modifier
                         .padding(horizontal = 40.dp)
                         .fillMaxWidth()
                 ) {
                     TextField(
-                        value = "",
-                        onValueChange = {},
+                        value = telefono.value,
+                        onValueChange = { telefono.value = it },
                         label = { Text("Telefono") },
                         modifier = Modifier
                             .weight(1f)
@@ -217,14 +222,15 @@ class MainActivity : ComponentActivity() {
                 }
                 Spacer(modifier = Modifier.height(10.dp))
 
+                // Puesto con Checkbox
                 Row(
                     modifier = Modifier
                         .padding(horizontal = 40.dp)
                         .fillMaxWidth()
                 ) {
                     TextField(
-                        value = "",
-                        onValueChange = {},
+                        value = puesto.value,
+                        onValueChange = { puesto.value = it },
                         label = { Text("Puesto / Cargo") },
                         modifier = Modifier
                             .weight(1f)
@@ -235,18 +241,16 @@ class MainActivity : ComponentActivity() {
                             .clip(RoundedCornerShape(20.dp))
                     )
                     Spacer(modifier = Modifier.width(10.dp))
-                    val isCheckedTelefono = remember { mutableStateOf(false) }
+                    val isCheckedPuesto = remember { mutableStateOf(false) }
                     Checkbox(
-                        checked = isCheckedTelefono.value,
-                        onCheckedChange = { isCheckedTelefono.value = it },
+                        checked = isCheckedPuesto.value,
+                        onCheckedChange = { isCheckedPuesto.value = it },
                         modifier = Modifier.align(Alignment.CenterVertically)
                     )
                 }
-
-
-
                 Spacer(modifier = Modifier.height(15.dp))
-                // Selector de Género
+
+                // Selección de Género
                 val selectedGender = remember { mutableStateOf("") }
                 Row(
                     modifier = Modifier
