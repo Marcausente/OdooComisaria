@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -68,7 +69,10 @@ class MainActivity : ComponentActivity() {
                     fontSize = 41.sp,
                     modifier = Modifier
                         .padding(20.dp)
-                        .background(Color.Gray.copy(alpha = 0.6f), shape = RoundedCornerShape(20.dp))
+                        .background(
+                            Color.Gray.copy(alpha = 0.6f),
+                            shape = RoundedCornerShape(20.dp)
+                        )
                         .clip(RoundedCornerShape(20.dp))
                         .padding(horizontal = 24.dp, vertical = 16.dp)
                 )
@@ -88,23 +92,29 @@ class MainActivity : ComponentActivity() {
                     fontSize = 20.sp,
                     modifier = Modifier
                         .padding(20.dp)
-                        .background(Color.Gray.copy(alpha = 0.6f), shape = RoundedCornerShape(20.dp))
+                        .background(
+                            Color.Gray.copy(alpha = 0.6f),
+                            shape = RoundedCornerShape(20.dp)
+                        )
                         .clip(RoundedCornerShape(20.dp))
                         .padding(horizontal = 24.dp, vertical = 15.dp)
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 val text = remember { mutableStateOf("") }
 
-            TextField(
-                value = "",
-                onValueChange = {},
-                label = { Text("Nombre") },
-                modifier = Modifier
-                    .padding(horizontal = 40.dp)
-                    .fillMaxWidth()
-                    .background(Color.Gray.copy(alpha = 0.6f), shape = RoundedCornerShape(20.dp))
-                    .clip(RoundedCornerShape(20.dp))
-            )
+                TextField(
+                    value = "",
+                    onValueChange = {},
+                    label = { Text("Nombre") },
+                    modifier = Modifier
+                        .padding(horizontal = 40.dp)
+                        .fillMaxWidth()
+                        .background(
+                            Color.Gray.copy(alpha = 0.6f),
+                            shape = RoundedCornerShape(20.dp)
+                        )
+                        .clip(RoundedCornerShape(20.dp))
+                )
                 Spacer(modifier = Modifier.height(10.dp))
                 TextField(
                     value = "",
@@ -113,11 +123,56 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .padding(horizontal = 40.dp)
                         .fillMaxWidth()
-                        .background(Color.Gray.copy(alpha = 0.6f), shape = RoundedCornerShape(20.dp))
+                        .background(
+                            Color.Gray.copy(alpha = 0.6f),
+                            shape = RoundedCornerShape(20.dp)
+                        )
+                        .clip(RoundedCornerShape(20.dp))
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                TextField(
+                    value = "",
+                    onValueChange = {},
+                    label = { Text("Empresa") },
+                    modifier = Modifier
+                        .padding(horizontal = 40.dp)
+                        .fillMaxWidth()
+                        .background(
+                            Color.Gray.copy(alpha = 0.6f),
+                            shape = RoundedCornerShape(20.dp)
+                        )
+                        .clip(RoundedCornerShape(20.dp))
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                TextField(
+                    value = "",
+                    onValueChange = {},
+                    label = { Text("Correo") },
+                    modifier = Modifier
+                        .padding(horizontal = 40.dp)
+                        .fillMaxWidth()
+                        .background(
+                            Color.Gray.copy(alpha = 0.6f),
+                            shape = RoundedCornerShape(20.dp)
+                        )
                         .clip(RoundedCornerShape(20.dp))
                 )
 
             }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 10.dp) // Ajusta el espacio desde la parte inferior
+                    .align(Alignment.BottomCenter), // Alinea la columna en la parte inferior
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(
+                    onClick = { /* Acción para el botón */ },
+                    modifier = Modifier.padding(top = 8.dp) // Ajusta el espacio entre el texto y el botón
+                ) {
+                    Text("ENVIAR")
+                }
             }
         }
     }
+}
