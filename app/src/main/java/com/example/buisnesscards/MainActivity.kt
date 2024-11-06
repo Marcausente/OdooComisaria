@@ -17,7 +17,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -87,9 +90,34 @@ class MainActivity : ComponentActivity() {
                         .padding(20.dp)
                         .background(Color.Gray.copy(alpha = 0.6f), shape = RoundedCornerShape(20.dp))
                         .clip(RoundedCornerShape(20.dp))
-                        .padding(horizontal = 100.dp, vertical = 100.dp)
+                        .padding(horizontal = 24.dp, vertical = 15.dp)
                 )
+                Spacer(modifier = Modifier.height(1.dp))
+                val text = remember { mutableStateOf("") }
+
+            TextField(
+                value = "",
+                onValueChange = {},
+                label = { Text("Nombre") },
+                modifier = Modifier
+                    .padding(horizontal = 40.dp)
+                    .fillMaxWidth()
+                    .background(Color.Gray.copy(alpha = 0.6f), shape = RoundedCornerShape(20.dp))
+                    .clip(RoundedCornerShape(20.dp))
+            )
+                Spacer(modifier = Modifier.height(10.dp))
+                TextField(
+                    value = "",
+                    onValueChange = {},
+                    label = { Text("Apellido") },
+                    modifier = Modifier
+                        .padding(horizontal = 40.dp)
+                        .fillMaxWidth()
+                        .background(Color.Gray.copy(alpha = 0.6f), shape = RoundedCornerShape(20.dp))
+                        .clip(RoundedCornerShape(20.dp))
+                )
+
+            }
             }
         }
     }
-}
