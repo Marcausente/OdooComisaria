@@ -9,6 +9,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +17,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -157,20 +160,79 @@ class MainActivity : ComponentActivity() {
                         )
                         .clip(RoundedCornerShape(20.dp))
                 )
+                Spacer(modifier = Modifier.height(10.dp))
+                TextField(
+                    value = "",
+                    onValueChange = {},
+                    label = { Text("Telefono") },
+                    modifier = Modifier
+                        .padding(horizontal = 40.dp)
+                        .fillMaxWidth()
+                        .background(
+                            Color.Gray.copy(alpha = 0.6f),
+                            shape = RoundedCornerShape(20.dp)
+                        )
+                        .clip(RoundedCornerShape(20.dp))
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                var selectedGender = remember { mutableStateOf("") }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 40.dp)
+                        .background(
+                            Color.Gray.copy(alpha = 0.6f),
+                            shape = RoundedCornerShape(20.dp)
+                        )
+                        .clip(RoundedCornerShape(20.dp)),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Género: ",
+                        color = Color.White,
+                        modifier = Modifier.padding(start = 8.dp, top = 12.dp, bottom = 12.dp),
+                        fontSize = 18.sp
+                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(
+                            selected = selectedGender.value == "Male",
+                            onClick = { selectedGender.value = "Male" },
+                            colors = RadioButtonDefaults.colors(selectedColor = Color.White)
+                        )
+                        Text(
+                            text = "Hombre",
+                            color = Color.White,
+                            modifier = Modifier.padding(end = 16.dp),
+                            fontSize = 18.sp
+                        )
+                        RadioButton(
+                            selected = selectedGender.value == "Female",
+                            onClick = { selectedGender.value = "Female" },
+                            colors = RadioButtonDefaults.colors(selectedColor = Color.White)
+                        )
+                        Text(
+                            text = "Mujer",
+                            color = Color.White,
+                            fontSize = 18.sp
+                        )
+                    }
+                }
+
 
             }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 10.dp) // Ajusta el espacio desde la parte inferior
+                    .padding(bottom = 40.dp) // Ajusta el espacio desde la parte inferior
                     .align(Alignment.BottomCenter), // Alinea la columna en la parte inferior
                 horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            )
+            {
                 Button(
                     onClick = { /* Acción para el botón */ },
-                    modifier = Modifier.padding(top = 8.dp) // Ajusta el espacio entre el texto y el botón
+                    modifier = Modifier.height(60.dp).fillMaxWidth(0.8f)
                 ) {
-                    Text("ENVIAR")
+                    Text("ENVIAR", fontSize = 30.sp, color = Color.White, )
                 }
             }
         }
