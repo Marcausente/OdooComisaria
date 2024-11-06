@@ -3,25 +3,11 @@ package com.example.buisnesscards
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,9 +21,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.buisnesscards.ui.theme.BuisnessCardsTheme
-
-//test
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,8 +86,10 @@ class MainActivity : ComponentActivity() {
                         .padding(horizontal = 24.dp, vertical = 15.dp)
                 )
                 Spacer(modifier = Modifier.height(1.dp))
+
                 val text = remember { mutableStateOf("") }
 
+                // Nombre
                 TextField(
                     value = "",
                     onValueChange = {},
@@ -119,63 +104,150 @@ class MainActivity : ComponentActivity() {
                         .clip(RoundedCornerShape(20.dp))
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                TextField(
-                    value = "",
-                    onValueChange = {},
-                    label = { Text("Apellido") },
+
+                // Apellido con CheckBox
+                Row(
                     modifier = Modifier
                         .padding(horizontal = 40.dp)
                         .fillMaxWidth()
-                        .background(
-                            Color.Gray.copy(alpha = 0.6f),
-                            shape = RoundedCornerShape(20.dp)
-                        )
-                        .clip(RoundedCornerShape(20.dp))
-                )
+                ) {
+                    TextField(
+                        value = "",
+                        onValueChange = {},
+                        label = { Text("Apellido") },
+                        modifier = Modifier
+                            .weight(1f)
+                            .background(
+                                Color.Gray.copy(alpha = 0.6f),
+                                shape = RoundedCornerShape(20.dp)
+                            )
+                            .clip(RoundedCornerShape(20.dp))
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    val isCheckedApellido = remember { mutableStateOf(false) }
+                    Checkbox(
+                        checked = isCheckedApellido.value,
+                        onCheckedChange = { isCheckedApellido.value = it },
+                        modifier = Modifier.align(Alignment.CenterVertically)
+                    )
+                }
                 Spacer(modifier = Modifier.height(10.dp))
-                TextField(
-                    value = "",
-                    onValueChange = {},
-                    label = { Text("Empresa") },
+
+                // Empresa con CheckBox
+                Row(
                     modifier = Modifier
                         .padding(horizontal = 40.dp)
                         .fillMaxWidth()
-                        .background(
-                            Color.Gray.copy(alpha = 0.6f),
-                            shape = RoundedCornerShape(20.dp)
-                        )
-                        .clip(RoundedCornerShape(20.dp))
-                )
+                ) {
+                    TextField(
+                        value = "",
+                        onValueChange = {},
+                        label = { Text("Empresa") },
+                        modifier = Modifier
+                            .weight(1f)
+                            .background(
+                                Color.Gray.copy(alpha = 0.6f),
+                                shape = RoundedCornerShape(20.dp)
+                            )
+                            .clip(RoundedCornerShape(20.dp))
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    val isCheckedEmpresa = remember { mutableStateOf(false) }
+                    Checkbox(
+                        checked = isCheckedEmpresa.value,
+                        onCheckedChange = { isCheckedEmpresa.value = it },
+                        modifier = Modifier.align(Alignment.CenterVertically)
+                    )
+                }
                 Spacer(modifier = Modifier.height(10.dp))
-                TextField(
-                    value = "",
-                    onValueChange = {},
-                    label = { Text("Correo") },
+
+                // Correo con CheckBox
+                Row(
                     modifier = Modifier
                         .padding(horizontal = 40.dp)
                         .fillMaxWidth()
-                        .background(
-                            Color.Gray.copy(alpha = 0.6f),
-                            shape = RoundedCornerShape(20.dp)
-                        )
-                        .clip(RoundedCornerShape(20.dp))
-                )
+                ) {
+                    TextField(
+                        value = "",
+                        onValueChange = {},
+                        label = { Text("Correo") },
+                        modifier = Modifier
+                            .weight(1f)
+                            .background(
+                                Color.Gray.copy(alpha = 0.6f),
+                                shape = RoundedCornerShape(20.dp)
+                            )
+                            .clip(RoundedCornerShape(20.dp))
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    val isCheckedCorreo = remember { mutableStateOf(false) }
+                    Checkbox(
+                        checked = isCheckedCorreo.value,
+                        onCheckedChange = { isCheckedCorreo.value = it },
+                        modifier = Modifier.align(Alignment.CenterVertically)
+                    )
+                }
                 Spacer(modifier = Modifier.height(10.dp))
-                TextField(
-                    value = "",
-                    onValueChange = {},
-                    label = { Text("Telefono") },
+
+                // Telefono con CheckBox
+                Row(
                     modifier = Modifier
                         .padding(horizontal = 40.dp)
                         .fillMaxWidth()
-                        .background(
-                            Color.Gray.copy(alpha = 0.6f),
-                            shape = RoundedCornerShape(20.dp)
-                        )
-                        .clip(RoundedCornerShape(20.dp))
-                )
+                ) {
+                    TextField(
+                        value = "",
+                        onValueChange = {},
+                        label = { Text("Telefono") },
+                        modifier = Modifier
+                            .weight(1f)
+                            .background(
+                                Color.Gray.copy(alpha = 0.6f),
+                                shape = RoundedCornerShape(20.dp)
+                            )
+                            .clip(RoundedCornerShape(20.dp))
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    val isCheckedTelefono = remember { mutableStateOf(false) }
+                    Checkbox(
+                        checked = isCheckedTelefono.value,
+                        onCheckedChange = { isCheckedTelefono.value = it },
+                        modifier = Modifier.align(Alignment.CenterVertically)
+                    )
+                }
                 Spacer(modifier = Modifier.height(10.dp))
-                var selectedGender = remember { mutableStateOf("") }
+
+                Row(
+                    modifier = Modifier
+                        .padding(horizontal = 40.dp)
+                        .fillMaxWidth()
+                ) {
+                    TextField(
+                        value = "",
+                        onValueChange = {},
+                        label = { Text("Puesto / Cargo") },
+                        modifier = Modifier
+                            .weight(1f)
+                            .background(
+                                Color.Gray.copy(alpha = 0.6f),
+                                shape = RoundedCornerShape(20.dp)
+                            )
+                            .clip(RoundedCornerShape(20.dp))
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    val isCheckedTelefono = remember { mutableStateOf(false) }
+                    Checkbox(
+                        checked = isCheckedTelefono.value,
+                        onCheckedChange = { isCheckedTelefono.value = it },
+                        modifier = Modifier.align(Alignment.CenterVertically)
+                    )
+                }
+
+
+
+                Spacer(modifier = Modifier.height(15.dp))
+                // Selector de Género
+                val selectedGender = remember { mutableStateOf("") }
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -217,22 +289,21 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 }
-
-
             }
+
+            // Botón de Enviar
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 40.dp) // Ajusta el espacio desde la parte inferior
+                    .padding(bottom = 80.dp) // Ajusta el espacio desde la parte inferior
                     .align(Alignment.BottomCenter), // Alinea la columna en la parte inferior
                 horizontalAlignment = Alignment.CenterHorizontally
-            )
-            {
+            ) {
                 Button(
                     onClick = { /* Acción para el botón */ },
                     modifier = Modifier.height(60.dp).fillMaxWidth(0.8f)
                 ) {
-                    Text("ENVIAR", fontSize = 30.sp, color = Color.White, )
+                    Text("ENVIAR", fontSize = 30.sp, color = Color.White)
                 }
             }
         }
