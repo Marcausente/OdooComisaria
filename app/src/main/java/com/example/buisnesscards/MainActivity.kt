@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
@@ -48,11 +50,12 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxSize().matchParentSize()
             )
 
+            // Primera columna con el título en el centro superior
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(20.dp),
-                verticalArrangement = Arrangement.SpaceBetween,
+                    .fillMaxWidth()
+                    .padding(top = 10.dp) // Ajusta el espacio desde la parte superior
+                    .align(Alignment.TopCenter),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
@@ -61,31 +64,32 @@ class MainActivity : ComponentActivity() {
                     color = Color.White,
                     fontSize = 41.sp,
                     modifier = Modifier
-                        .padding(20.dp) // Aumentamos el padding interno
-                        .background(Color.Gray.copy(alpha = 0.6f), shape = RoundedCornerShape(20.dp)) // Primero fondo y forma
-                        .clip(RoundedCornerShape(80.dp)) // Aplicamos clip después para el redondeado
-                        .padding(horizontal = 24.dp, vertical = 16.dp) // Añadimos padding extra para más espacio en el fondo
+                        .padding(20.dp)
+                        .background(Color.Gray.copy(alpha = 0.6f), shape = RoundedCornerShape(20.dp))
+                        .clip(RoundedCornerShape(20.dp))
+                        .padding(horizontal = 24.dp, vertical = 16.dp)
                 )
             }
-            Spacer( modifier = Modifier.padding(10.dp))
+
+            // Segunda columna con el texto adicional, justo debajo de la primera
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(90.dp),
-                verticalArrangement = Arrangement.SpaceBetween,
+                    .fillMaxWidth()
+                    .padding(top = 110.dp) // Ajusta el espacio entre el título y el segundo texto
+                    .align(Alignment.TopCenter),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("ARRIBA ESPAÑA")
+                Text(
+                    "Ingrese sus datos:",
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .background(Color.Gray.copy(alpha = 0.6f), shape = RoundedCornerShape(20.dp))
+                        .clip(RoundedCornerShape(20.dp))
+                        .padding(horizontal = 100.dp, vertical = 100.dp)
+                )
             }
-
-
-
-
-
-
-
-
-
         }
     }
 }
