@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -170,13 +171,21 @@ class MainActivity : ComponentActivity() {
     fun BackgroundScreen() {
         val selectedImage = remember { mutableStateOf("") }
 
+        val imageList = listOf(
+            R.drawable.background, // Puedes cambiar estos valores por tus imágenes específicas
+            R.drawable.background,
+            R.drawable.background,
+            R.drawable.background
+        )
+
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Image(
                 contentScale = ContentScale.FillBounds,
-                painter = painterResource(id = R.drawable.background),
+                painter = painterResource(id = R.drawable.background), // Este es el fondo general
                 contentDescription = "Background",
                 modifier = Modifier.fillMaxSize().matchParentSize()
             )
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -196,10 +205,71 @@ class MainActivity : ComponentActivity() {
                         .clip(RoundedCornerShape(20.dp))
                         .padding(horizontal = 24.dp, vertical = 20.dp)
                 )
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // Crear las filas de imágenes
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally)
+                ) {
+                    // Fila 1 de imágenes
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        imageList.subList(0, 2).forEachIndexed { index, imageRes ->
+                            Image(
+                                painter = painterResource(id = imageRes),
+                                contentDescription = "Background $index",
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .size(200.dp) // Imágenes más grandes (200.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(Color.Gray.copy(alpha = 0.5f))
+                                    .clickable {
+                                        selectedImage.value = "Background $index" // Guardar la selección
+                                    }
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    // Fila 2 de imágenes
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        imageList.subList(2, 4).forEachIndexed { index, imageRes ->
+                            Image(
+                                painter = painterResource(id = imageRes),
+                                contentDescription = "Background ${index + 2}",
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .size(200.dp) // Imágenes más grandes (200.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(Color.Gray.copy(alpha = 0.5f))
+                                    .clickable {
+                                        selectedImage.value = "Background ${index + 2}" // Guardar la selección
+                                    }
+                            )
+                        }
+                    }
+                }
+
+                // Mostrar el fondo seleccionado (opcional)
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = "Seleccionaste: ${selectedImage.value}",
+                    color = Color.White,
+                    fontSize = 16.sp
+                )
             }
-            Column(
         }
     }
+
+
 
     @Composable
     fun TextFieldWithCheckbox(
