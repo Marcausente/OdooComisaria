@@ -20,9 +20,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +41,8 @@ class MainActivity : ComponentActivity() {
         val navController = rememberNavController()
         NavHost(navController = navController, startDestination = "formScreen") {
             composable("formScreen") { FormScreen(navController) }
-            composable("BackgroundScreen") { BackgroundScreen() }
+            composable("BackgroundScreen") { BackgroundScreen(navController) }
+            composable("PaginaTarjeta") { PaginaTarjeta() }
         }
     }
 
@@ -132,7 +137,7 @@ class MainActivity : ComponentActivity() {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Text("Modo Oscuro", color = Color.White, fontSize = 18.sp)
+                    Text("Bordes negros", color = Color.White, fontSize = 18.sp)
                     Spacer(modifier = Modifier.width(10.dp))
                     Switch(
                         checked = userPreferredDarkMode.value,
@@ -168,7 +173,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun BackgroundScreen() {
+    fun BackgroundScreen(navController: NavHostController) {
         val selectedImage = remember { mutableStateOf("") }
 
         // Listado de imágenes con sus nombres personalizados
@@ -269,6 +274,17 @@ class MainActivity : ComponentActivity() {
                     color = Color.White,
                     fontSize = 16.sp
                 )
+                Spacer(modifier = Modifier.height(20.dp))
+                Button(
+                    onClick = {
+                        navController.navigate("PaginaTarjeta") // Navegar a la página de tarjeta
+                    },
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth(0.8f)
+                ) {
+                    Text("Ir a la página de tarjeta", fontSize = 16.sp, color = Color.White)
+                }
             }
         }
     }
@@ -349,4 +365,11 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+    @Composable
+    fun PaginaTarjeta() {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("Página Tarjeta", color = Color.Black, fontSize = 24.sp)
+        }
+    }
+
 }
