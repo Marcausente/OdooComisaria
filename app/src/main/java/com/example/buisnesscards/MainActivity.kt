@@ -8,9 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,316 +18,258 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            main()
+            MainApp()
         }
     }
 
     @Composable
-    fun main() {
-        // Estado para el modo oscuro
+    fun MainApp() {
+        val navController = rememberNavController()
+        NavHost(navController = navController, startDestination = "formScreen") {
+            composable("formScreen") { FormScreen(navController) }
+            composable("BackgroundScreen") { BackgroundScreen() }
+        }
+    }
+
+    @Composable
+    fun FormScreen(navController: NavController) {
+        // Estados para los campos del formulario y los checkboxes
         val userPreferredDarkMode = remember { mutableStateOf(false) }
+        val nombre = remember { mutableStateOf("") }
+        val apellido = remember { mutableStateOf("") }
+        val empresa = remember { mutableStateOf("") }
+        val correo = remember { mutableStateOf("") }
+        val telefono = remember { mutableStateOf("") }
+        val puesto = remember { mutableStateOf("") }
+        val isCheckedApellido = remember { mutableStateOf(false) }
+        val isCheckedEmpresa = remember { mutableStateOf(false) }
+        val isCheckedCorreo = remember { mutableStateOf(false) }
+        val isCheckedTelefono = remember { mutableStateOf(false) }
+        val isCheckedPuesto = remember { mutableStateOf(false) }
+        val selectedGender = remember { mutableStateOf("") }
 
-            Box(modifier = Modifier.fillMaxSize()) {
-                Image(
-                    contentScale = ContentScale.FillBounds,
-                    painter = painterResource(id = R.drawable.background),
-                    contentDescription = "Background",
-                    modifier = Modifier.fillMaxSize().matchParentSize()
-                )
+        Box(modifier = Modifier.fillMaxSize()) {
+            Image(
+                contentScale = ContentScale.FillBounds,
+                painter = painterResource(id = R.drawable.background),
+                contentDescription = "Background",
+                modifier = Modifier.fillMaxSize().matchParentSize()
+            )
 
-                // Primera columna con el título en el centro superior
-                Column(
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp)
+                    .align(Alignment.TopCenter),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    "Business Cards",
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    fontSize = 41.sp,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp) // Ajusta el espacio desde la parte superior
-                        .align(Alignment.TopCenter),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .padding(20.dp)
+                        .background(
+                            Color.Gray.copy(alpha = 0.6f),
+                            shape = RoundedCornerShape(20.dp)
+                        )
+                        .clip(RoundedCornerShape(20.dp))
+                        .padding(horizontal = 24.dp, vertical = 16.dp)
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 110.dp)
+                    .align(Alignment.TopCenter),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    "Ingrese sus datos:",
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .background(
+                            Color.Gray.copy(alpha = 0.6f),
+                            shape = RoundedCornerShape(20.dp)
+                        )
+                        .clip(RoundedCornerShape(20.dp))
+                        .padding(horizontal = 24.dp, vertical = 15.dp)
+                )
+                Spacer(modifier = Modifier.height(1.dp))
+
+                // Campos de entrada y checkboxes
+                TextFieldWithCheckbox("Nombre", nombre)
+                TextFieldWithCheckbox("Apellido", apellido, isCheckedApellido)
+                TextFieldWithCheckbox("Empresa", empresa, isCheckedEmpresa)
+                TextFieldWithCheckbox("Correo", correo, isCheckedCorreo)
+                TextFieldWithCheckbox("Telefono", telefono, isCheckedTelefono)
+                TextFieldWithCheckbox("Puesto / Cargo", puesto, isCheckedPuesto)
+
+                // Selección de género
+                GenderSelection(selectedGender)
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // Switch para el modo oscuro
+                Row(
+                    modifier = Modifier
+                        .padding(horizontal = 40.dp)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Text(
-                        "Business Cards",
-                        textAlign = TextAlign.Center,
-                        color = Color.White,
-                        fontSize = 41.sp,
-                        modifier = Modifier
-                            .padding(20.dp)
-                            .background(
-                                Color.Gray.copy(alpha = 0.6f),
-                                shape = RoundedCornerShape(20.dp)
-                            )
-                            .clip(RoundedCornerShape(20.dp))
-                            .padding(horizontal = 24.dp, vertical = 16.dp)
+                    Text("Modo Oscuro", color = Color.White, fontSize = 18.sp)
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Switch(
+                        checked = userPreferredDarkMode.value,
+                        onCheckedChange = { userPreferredDarkMode.value = it }
                     )
                 }
 
-                // Segunda columna con el texto adicional, justo debajo de la primera
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 110.dp) // Ajusta el espacio entre el título y el segundo texto
-                        .align(Alignment.TopCenter),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        "Ingrese sus datos:",
-                        color = Color.White,
-                        fontSize = 20.sp,
-                        modifier = Modifier
-                            .padding(20.dp)
-                            .background(
-                                Color.Gray.copy(alpha = 0.6f),
-                                shape = RoundedCornerShape(20.dp)
-                            )
-                            .clip(RoundedCornerShape(20.dp))
-                            .padding(horizontal = 24.dp, vertical = 15.dp)
-                    )
-                    Spacer(modifier = Modifier.height(1.dp))
-
-                    // Variables para recordar los valores introducidos
-                    val nombre = remember { mutableStateOf("") }
-                    val apellido = remember { mutableStateOf("") }
-                    val empresa = remember { mutableStateOf("") }
-                    val correo = remember { mutableStateOf("") }
-                    val telefono = remember { mutableStateOf("") }
-                    val puesto = remember { mutableStateOf("") }
-
-                    // Nombre
-                    TextField(
-                        value = nombre.value,
-                        onValueChange = { nombre.value = it },
-                        label = { Text("Nombre") },
-                        modifier = Modifier
-                            .padding(horizontal = 40.dp)
-                            .fillMaxWidth()
-                            .background(
-                                Color.Gray.copy(alpha = 0.6f),
-                                shape = RoundedCornerShape(20.dp)
-                            )
-                            .clip(RoundedCornerShape(20.dp))
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    // Apellido con Checkbox
-                    Row(
-                        modifier = Modifier
-                            .padding(horizontal = 40.dp)
-                            .fillMaxWidth()
-                    ) {
-                        TextField(
-                            value = apellido.value,
-                            onValueChange = { apellido.value = it },
-                            label = { Text("Apellido") },
-                            modifier = Modifier
-                                .weight(1f)
-                                .background(
-                                    Color.Gray.copy(alpha = 0.6f),
-                                    shape = RoundedCornerShape(20.dp)
-                                )
-                                .clip(RoundedCornerShape(20.dp))
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        val isCheckedApellido = remember { mutableStateOf(false) }
-                        Checkbox(
-                            checked = isCheckedApellido.value,
-                            onCheckedChange = { isCheckedApellido.value = it },
-                            modifier = Modifier.align(Alignment.CenterVertically)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    // Empresa con Checkbox
-                    Row(
-                        modifier = Modifier
-                            .padding(horizontal = 40.dp)
-                            .fillMaxWidth()
-                    ) {
-                        TextField(
-                            value = empresa.value,
-                            onValueChange = { empresa.value = it },
-                            label = { Text("Empresa") },
-                            modifier = Modifier
-                                .weight(1f)
-                                .background(
-                                    Color.Gray.copy(alpha = 0.6f),
-                                    shape = RoundedCornerShape(20.dp)
-                                )
-                                .clip(RoundedCornerShape(20.dp))
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        val isCheckedEmpresa = remember { mutableStateOf(false) }
-                        Checkbox(
-                            checked = isCheckedEmpresa.value,
-                            onCheckedChange = { isCheckedEmpresa.value = it },
-                            modifier = Modifier.align(Alignment.CenterVertically)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    // Correo con Checkbox
-                    Row(
-                        modifier = Modifier
-                            .padding(horizontal = 40.dp)
-                            .fillMaxWidth()
-                    ) {
-                        TextField(
-                            value = correo.value,
-                            onValueChange = { correo.value = it },
-                            label = { Text("Correo") },
-                            modifier = Modifier
-                                .weight(1f)
-                                .background(
-                                    Color.Gray.copy(alpha = 0.6f),
-                                    shape = RoundedCornerShape(20.dp)
-                                )
-                                .clip(RoundedCornerShape(20.dp))
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        val isCheckedCorreo = remember { mutableStateOf(false) }
-                        Checkbox(
-                            checked = isCheckedCorreo.value,
-                            onCheckedChange = { isCheckedCorreo.value = it },
-                            modifier = Modifier.align(Alignment.CenterVertically)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    // Telefono con Checkbox
-                    Row(
-                        modifier = Modifier
-                            .padding(horizontal = 40.dp)
-                            .fillMaxWidth()
-                    ) {
-                        TextField(
-                            value = telefono.value,
-                            onValueChange = { telefono.value = it },
-                            label = { Text("Telefono") },
-                            modifier = Modifier
-                                .weight(1f)
-                                .background(
-                                    Color.Gray.copy(alpha = 0.6f),
-                                    shape = RoundedCornerShape(20.dp)
-                                )
-                                .clip(RoundedCornerShape(20.dp))
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        val isCheckedTelefono = remember { mutableStateOf(false) }
-                        Checkbox(
-                            checked = isCheckedTelefono.value,
-                            onCheckedChange = { isCheckedTelefono.value = it },
-                            modifier = Modifier.align(Alignment.CenterVertically)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    // Puesto con Checkbox
-                    Row(
-                        modifier = Modifier
-                            .padding(horizontal = 40.dp)
-                            .fillMaxWidth()
-                    ) {
-                        TextField(
-                            value = puesto.value,
-                            onValueChange = { puesto.value = it },
-                            label = { Text("Puesto / Cargo") },
-                            modifier = Modifier
-                                .weight(1f)
-                                .background(
-                                    Color.Gray.copy(alpha = 0.6f),
-                                    shape = RoundedCornerShape(20.dp)
-                                )
-                                .clip(RoundedCornerShape(20.dp))
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        val isCheckedPuesto = remember { mutableStateOf(false) }
-                        Checkbox(
-                            checked = isCheckedPuesto.value,
-                            onCheckedChange = { isCheckedPuesto.value = it },
-                            modifier = Modifier.align(Alignment.CenterVertically)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(15.dp))
-
-                    // Selección de Género
-                    val selectedGender = remember { mutableStateOf("") }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 40.dp)
-                            .background(
-                                Color.Gray.copy(alpha = 0.6f),
-                                shape = RoundedCornerShape(20.dp)
-                            )
-                            .clip(RoundedCornerShape(20.dp)),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = "Género: ",
-                            color = Color.White,
-                            modifier = Modifier.padding(start = 8.dp, top = 12.dp, bottom = 12.dp),
-                            fontSize = 18.sp
-                        )
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            RadioButton(
-                                selected = selectedGender.value == "Male",
-                                onClick = { selectedGender.value = "Male" },
-                                colors = RadioButtonDefaults.colors(selectedColor = Color.White)
-                            )
-                            Text(
-                                text = "Hombre",
-                                color = Color.White,
-                                fontSize = 18.sp
-                            )
-                        }
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            RadioButton(
-                                selected = selectedGender.value == "Female",
-                                onClick = { selectedGender.value = "Female" },
-                                colors = RadioButtonDefaults.colors(selectedColor = Color.White)
-                            )
-                            Text(
-                                text = "Mujer",
-                                color = Color.White,
-                                fontSize = 18.sp
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    //SWITCH DEL MODO OSCURO
-                    Row(
-                        modifier = Modifier
-                            .padding(horizontal = 40.dp)
-                            .fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center // Alinea al centro horizontalmente
-                    ) {
-                        Text("Modo Oscuro", color = Color.White, fontSize = 18.sp)
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Switch(
-                            checked = userPreferredDarkMode.value,
-                            onCheckedChange = { userPreferredDarkMode.value = it } // Guardamos la elección del usuario sin aplicarla visualmente
-                        )
-                    }
+                Spacer(modifier = Modifier.height(20.dp))
 
                 // Botón de Enviar
-                Column(
+                Button(
+                    onClick = {
+                        val savedData = mutableMapOf<String, String>()
+                        savedData["Nombre"] = nombre.value
+                        if (isCheckedApellido.value) savedData["Apellido"] = apellido.value
+                        if (isCheckedEmpresa.value) savedData["Empresa"] = empresa.value
+                        if (isCheckedCorreo.value) savedData["Correo"] = correo.value
+                        if (isCheckedTelefono.value) savedData["Telefono"] = telefono.value
+                        if (isCheckedPuesto.value) savedData["Puesto"] = puesto.value
+                        savedData["Género"] = selectedGender.value
+                        savedData["Modo Oscuro Activado"] = userPreferredDarkMode.value.toString()
+
+                        navController.navigate("BackgroundScreen")
+                    },
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 20.dp), // Ajusta el espacio desde la parte inferior
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .height(60.dp)
+                        .fillMaxWidth(0.8f)
                 ) {
-                    Button(
-                        onClick = { /* Acción para el botón */ },
-                        modifier = Modifier.height(60.dp).fillMaxWidth(0.8f)
-                    ) {
-                        Text("ENVIAR", fontSize = 30.sp, color = Color.White)
-                    }
+                    Text("ENVIAR", fontSize = 30.sp, color = Color.White)
                 }
+            }
+        }
+    }
+
+    @Composable
+    fun BackgroundScreen() {
+        val selectedImage = remember { mutableStateOf("") }
+
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Image(
+                contentScale = ContentScale.FillBounds,
+                painter = painterResource(id = R.drawable.background),
+                contentDescription = "Background",
+                modifier = Modifier.fillMaxSize().matchParentSize()
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp)
+                    .align(Alignment.TopCenter),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    "Elige uno de los siguientes fondos:",
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    modifier = Modifier
+                        .background(
+                            Color.Gray.copy(alpha = 0.6f),
+                            shape = RoundedCornerShape(20.dp)
+                        )
+                        .clip(RoundedCornerShape(20.dp))
+                        .padding(horizontal = 24.dp, vertical = 20.dp)
+                )
+            }
+            Column(
+        }
+    }
+
+    @Composable
+    fun TextFieldWithCheckbox(
+        label: String,
+        textState: MutableState<String>,
+        checkboxState: MutableState<Boolean>? = null
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(horizontal = 40.dp)
+                .fillMaxWidth()
+        ) {
+            TextField(
+                value = textState.value,
+                onValueChange = { textState.value = it },
+                label = { Text(label) },
+                modifier = Modifier
+                    .weight(1f)
+                    .background(
+                        Color.Gray.copy(alpha = 0.6f),
+                        shape = RoundedCornerShape(20.dp)
+                    )
+                    .clip(RoundedCornerShape(20.dp))
+            )
+            checkboxState?.let {
+                Spacer(modifier = Modifier.width(10.dp))
+                Checkbox(
+                    checked = it.value,
+                    onCheckedChange = { checked -> it.value = checked },
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+    }
+
+    @Composable
+    fun GenderSelection(selectedGender: MutableState<String>) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 40.dp)
+                .background(
+                    Color.Gray.copy(alpha = 0.6f),
+                    shape = RoundedCornerShape(20.dp)
+                )
+                .clip(RoundedCornerShape(20.dp)),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Género: ",
+                color = Color.White,
+                modifier = Modifier.padding(start = 8.dp, top = 12.dp, bottom = 12.dp),
+                fontSize = 18.sp
+            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                RadioButton(
+                    selected = selectedGender.value == "Male",
+                    onClick = { selectedGender.value = "Male" },
+                    colors = RadioButtonDefaults.colors(selectedColor = Color.White)
+                )
+                Text("Hombre", color = Color.White, fontSize = 18.sp)
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                RadioButton(
+                    selected = selectedGender.value == "Female",
+                    onClick = { selectedGender.value = "Female" },
+                    colors = RadioButtonDefaults.colors(selectedColor = Color.White)
+                )
+                Text("Mujer", color = Color.White, fontSize = 18.sp)
             }
         }
     }
