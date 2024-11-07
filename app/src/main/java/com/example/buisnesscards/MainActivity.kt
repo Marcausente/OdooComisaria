@@ -171,11 +171,12 @@ class MainActivity : ComponentActivity() {
     fun BackgroundScreen() {
         val selectedImage = remember { mutableStateOf("") }
 
+        // Listado de imágenes con sus nombres personalizados
         val imageList = listOf(
-            R.drawable.background, // Puedes cambiar estos valores por tus imágenes específicas
-            R.drawable.background,
-            R.drawable.background,
-            R.drawable.background
+            Pair(R.drawable.background1, "Fondo de madera"),
+            Pair(R.drawable.background2, "Fondo de metal"),
+            Pair(R.drawable.background3, "Fondo de papiro"),
+            Pair(R.drawable.background4, "Fondo de cuero")
         )
 
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -185,11 +186,10 @@ class MainActivity : ComponentActivity() {
                 contentDescription = "Background",
                 modifier = Modifier.fillMaxSize().matchParentSize()
             )
-
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 10.dp)
+                    .padding(top = 20.dp)
                     .align(Alignment.TopCenter),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -218,18 +218,20 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        imageList.subList(0, 2).forEachIndexed { index, imageRes ->
+                        imageList.subList(0, 2).forEachIndexed { index, pair ->
                             Image(
-                                painter = painterResource(id = imageRes),
+                                painter = painterResource(id = pair.first),
                                 contentDescription = "Background $index",
                                 modifier = Modifier
                                     .padding(8.dp)
-                                    .size(200.dp) // Imágenes más grandes (200.dp)
+                                    .height(250.dp) // Mantener la misma altura
+                                    .width(160.dp) // Establecer un tamaño fijo para la anchura
                                     .clip(RoundedCornerShape(12.dp))
                                     .background(Color.Gray.copy(alpha = 0.5f))
                                     .clickable {
-                                        selectedImage.value = "Background $index" // Guardar la selección
-                                    }
+                                        selectedImage.value = pair.second // Guardar la selección con el nombre del fondo
+                                    },
+                                contentScale = ContentScale.Crop // Ajuste para llenar el espacio y recortar si es necesario
                             )
                         }
                     }
@@ -241,24 +243,26 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        imageList.subList(2, 4).forEachIndexed { index, imageRes ->
+                        imageList.subList(2, 4).forEachIndexed { index, pair ->
                             Image(
-                                painter = painterResource(id = imageRes),
+                                painter = painterResource(id = pair.first),
                                 contentDescription = "Background ${index + 2}",
                                 modifier = Modifier
                                     .padding(8.dp)
-                                    .size(200.dp) // Imágenes más grandes (200.dp)
+                                    .height(250.dp) // Mantener la misma altura
+                                    .width(160.dp) // Establecer un tamaño fijo para la anchura
                                     .clip(RoundedCornerShape(12.dp))
                                     .background(Color.Gray.copy(alpha = 0.5f))
                                     .clickable {
-                                        selectedImage.value = "Background ${index + 2}" // Guardar la selección
-                                    }
+                                        selectedImage.value = pair.second // Guardar la selección con el nombre del fondo
+                                    },
+                                contentScale = ContentScale.Crop // Ajuste para llenar el espacio y recortar si es necesario
                             )
                         }
                     }
                 }
 
-                // Mostrar el fondo seleccionado (opcional)
+                // Mostrar el fondo seleccionado
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     text = "Seleccionaste: ${selectedImage.value}",
@@ -268,6 +272,8 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+
 
 
 
