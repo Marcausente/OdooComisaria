@@ -70,3 +70,17 @@ class Division(models.Model):
         ('forestales', 'Forestales'),
     ], string='División', required=True)
     descripcion = fields.Text(string='Descripción')
+
+class AgenteDivision(models.Model):
+    _name = 'modulo_trabajo_marc.agente_division'
+    _description = 'Relación Agente-División'
+
+    agente_id = fields.Many2one('modulo_trabajo_marc.agente', string='Agente', required=True)
+    division_id = fields.Many2one('modulo_trabajo_marc.division', string='División', required=True)
+    rango_division = fields.Selection([
+        ('jefe', 'Jefe de División'),
+        ('subjefe', 'Subjefe'),
+        ('supervisor', 'Supervisor'),
+        ('investigador', 'Investigador'),
+        ('agente', 'Agente'),
+    ], string='Rango en División', required=True)
