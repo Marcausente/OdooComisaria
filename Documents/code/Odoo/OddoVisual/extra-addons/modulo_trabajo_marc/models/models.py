@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
-# from odoo import models, fields, api
+from odoo import models, fields, api
 
+class ModuloTrabajoMarc(models.Model):
+    _name = 'modulo_trabajo_marc.modulo_trabajo_marc'
+    _description = 'Módulo Trabajo Marc'
 
-# class modulo_trabajo_marc(models.Model):
-#     _name = 'modulo_trabajo_marc.modulo_trabajo_marc'
-#     _description = 'modulo_trabajo_marc.modulo_trabajo_marc'
+    name = fields.Char(string='Nombre', required=True)
+    value = fields.Integer(string='Valor')
+    description = fields.Text(string='Descripción')
 
-#     name = fields.Char()
-#     value = fields.Integer()
 #     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
 #
 #     @api.depends('value')
 #     def _value_pc(self):
