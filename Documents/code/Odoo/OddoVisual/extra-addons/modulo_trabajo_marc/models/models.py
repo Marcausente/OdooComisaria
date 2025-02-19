@@ -4,7 +4,7 @@ from odoo import models, fields, api
 
 class ModuloTrabajoMarc(models.Model):
     _name = 'modulo_trabajo_marc.modulo_trabajo_marc'
-    _description = 'Módulo Trabajo Marc'
+    _description = 'Modulo acerca de una comisaria'
 
     name = fields.Char(string='Nombre', required=True)
     value = fields.Integer(string='Valor')
