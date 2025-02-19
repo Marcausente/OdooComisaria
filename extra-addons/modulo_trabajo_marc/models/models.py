@@ -111,6 +111,7 @@ class Agente(models.Model):
 
     name = fields.Char(string='Nombre Completo', required=True, tracking=True)
     numero_placa = fields.Char(string='Número de Placa', required=True, tracking=True)
+    rango = fields.Char(string='Rango', required=True, tracking=True)
     comisaria_id = fields.Many2one('modulo_trabajo_marc.comisaria', string='Comisaría', required=True)
     rango_id = fields.Many2one('modulo_trabajo_marc.rango', string='Rango', required=True, tracking=True)
     division_ids = fields.One2many('modulo_trabajo_marc.agente_division', 'agente_id', string='Divisiones')

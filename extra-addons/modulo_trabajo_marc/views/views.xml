@@ -36,6 +36,39 @@
         </field>
     </record>
 
+    <!-- Vistas para Agente -->
+    <record id="view_agente_form" model="ir.ui.view">
+        <field name="name">modulo_trabajo_marc.agente.form</field>
+        <field name="model">modulo_trabajo_marc.agente</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="numero_placa"/>
+                        <field name="rango"/>
+                        <field name="comisaria_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_agente_list" model="ir.ui.view">
+        <field name="name">modulo_trabajo_marc.agente.list</field>
+        <field name="model">modulo_trabajo_marc.agente</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="numero_placa"/>
+                <field name="rango"/>
+                <field name="comisaria_id"/>
+            </list>
+        </field>
+    </record>
+
     <!-- Acciones de Menú -->
     <record id="action_comisaria" model="ir.actions.act_window">
         <field name="name">Comisarías</field>
@@ -48,7 +81,7 @@
         <field name="name">Agentes</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">modulo_trabajo_marc.agente</field>
-        <field name="view_mode">form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <!-- Elementos de Menú -->
