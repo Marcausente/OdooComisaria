@@ -33,7 +33,7 @@ class Rango(models.Model):
     ], string='Rango', required=True)
     nivel = fields.Integer(string='Nivel Jerárquico', compute='_compute_nivel', store=True)
 
-        @api.depends('name')
+    @api.depends('name')
     def _compute_nivel(self):
         rangos_nivel = {
             'capitan': 11,
@@ -50,3 +50,23 @@ class Rango(models.Model):
         }
         for rango in self:
             rango.nivel = rangos_nivel.get(rango.name, 0)
+
+class Division(models.Model):
+    _name = 'modulo_trabajo_marc.division'
+    _description = 'Divisiones policiales'
+
+    name = fields.Selection([
+        ('relaciones_publicas', 'Relaciones Públicas'),
+        ('robos_homicidios', 'Robos y Homicidios'),
+        ('delitos_graves', 'Delitos Graves'),
+        ('delitos_violencia', 'Delitos con Violencia'),
+        ('narcoticos', 'Narcóticos'),
+        ('swat', 'S.W.A.T'),
+        ('air_support', 'Air Support Division'),
+        ('corrections', 'Department of Corrections'),
+        ('justice', 'Department of Justice'),
+        ('trafico', 'Tráfico'),
+        ('asuntos_internos', 'Asuntos Internos'),
+        ('forestales', 'Forestales'),
+    ], string='División', required=True)
+    descripcion = fields.Text(string='Descripción')
