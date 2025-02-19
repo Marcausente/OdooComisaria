@@ -95,3 +95,41 @@
             </tree>
         </field>
     </record>
+
+      <!-- Acciones de Menú -->
+    <record id="action_comisaria" model="ir.actions.act_window">
+        <field name="name">Comisarías</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">modulo_trabajo_marc.comisaria</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_agente" model="ir.actions.act_window">
+        <field name="name">Agentes</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">modulo_trabajo_marc.agente</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Elementos de Menú -->
+    <menuitem id="menu_policia_root" 
+              name="Gestión Policial" 
+              sequence="10"/>
+
+    <menuitem id="menu_policia_main" 
+              name="Policía" 
+              parent="menu_policia_root" 
+              sequence="10"/>
+
+    <menuitem id="menu_comisaria" 
+              name="Comisarías" 
+              parent="menu_policia_main" 
+              action="action_comisaria" 
+              sequence="10"/>
+
+    <menuitem id="menu_agente" 
+              name="Agentes" 
+              parent="menu_policia_main" 
+              action="action_agente" 
+              sequence="20"/>
+</odoo>
