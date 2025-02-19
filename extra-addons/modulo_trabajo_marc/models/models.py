@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
 
@@ -103,3 +103,22 @@ class Arma(models.Model):
         for arma in self:
             if arma.name and len(arma.name) != 8:
                 raise ValidationError(_('El número de serie debe tener exactamente 8 caracteres.'))
+
+class Agente(models.Model):
+    _name = 'modulo_trabajo_marc.agente'
+    _description = 'Agentes de policía'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+
+    name = fields.Char(string='Nombre Completo', required=True, tracking=True)
+    numero_placa = fields.Char(string='Número de Placa', required=True, tracking=True)
+    comisaria_id = fields.Many2one('modulo_trabajo_marc.comisaria', string='Comisaría', required=True)
+    rango_id = fields.Many2one('modulo_trabajo_marc.rango', string='Rango', required=True, tracking=True)
+    division_ids = fields.One2many('modulo_trabajo_marc.agente_division', 'agente_id', string='Divisiones')
+    arma_ids = fields.One2many('modulo_trabajo_marc.arma', 'agente_id', string='Armas Asignadas')
+    activo = fields.Boolean(string='Activo', default=True, tracking=True)
+
+    @api.constrains('numero_placa')
+    def _check_numero_placa(self):
+        for agente in self:
+            if not agente.numero_placa.isdigit() or len(agente.numero_placa) != 3:
+                raise ValidationError(_('El número de placa debe ser de exactamente 3 dígitos.'))
