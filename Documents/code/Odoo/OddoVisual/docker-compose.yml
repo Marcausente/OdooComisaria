@@ -1,0 +1,33 @@
+services:
+  odoo:
+    image: odoo:18.0
+    container_name: odoo-m10-18
+    depends_on:
+      - db
+    ports:
+      - 8069:8069
+      - 8072:8072
+    volumes:
+      - odoo-m10-18-data:/var/lib/odoo
+      - ./extra-addons:/mnt/extra-addons
+      - ./config:/etc/odoo
+    # restart: always
+
+  db:
+    image: postgres:13
+    shm_size: 1g
+    container_name: odoo-m10-db
+    ports:
+      - 5435:5432
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: odoo
+      POSTGRES_USER: odoo
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - odoo-m10-db-data:/var/lib/postgresql/data/pgdata
+    # restart: always
+
+volumes:
+  odoo-m10-18-data:
+  odoo-m10-db-data:
