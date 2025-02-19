@@ -84,3 +84,22 @@ class AgenteDivision(models.Model):
         ('investigador', 'Investigador'),
         ('agente', 'Agente'),
     ], string='Rango en División', required=True)
+
+class Arma(models.Model):
+    _name = 'modulo_trabajo_marc.arma'
+    _description = 'Armas registradas'
+
+    name = fields.Char(string='Número de Serie', required=True)
+    tipo = fields.Selection([
+        ('pistola', 'Pistola'),
+        ('rifle', 'Rifle'),
+        ('escopeta', 'Escopeta'),
+    ], string='Tipo de Arma', required=True)
+    modelo = fields.Char(string='Modelo', required=True)
+    agente_id = fields.Many2one('modulo_trabajo_marc.agente', string='Agente Asignado')
+
+    @api.constrains('name')
+    def _check_numero_serie(self):
+        for arma in self:
+            if arma.name and len(arma.name) != 8:
+                raise ValidationError(_('El número de serie debe tener exactamente 8 caracteres.'))
