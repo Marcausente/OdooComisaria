@@ -32,3 +32,52 @@
             </tree>
         </field>
     </record>
+
+   <!-- Vistas para Agente -->
+    <record id="view_agente_form" model="ir.ui.view">
+        <field name="name">modulo_trabajo_marc.agente.form</field>
+        <field name="model">modulo_trabajo_marc.agente</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Nombre Completo"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="numero_placa"/>
+                            <field name="rango_id"/>
+                            <field name="comisaria_id"/>
+                            <field name="activo"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Divisiones">
+                            <field name="division_ids">
+                                <tree editable="bottom">
+                                    <field name="division_id"/>
+                                    <field name="rango_division"/>
+                                </tree>
+                            </field>
+                        </page>
+                          <page string="Armas Asignadas">
+                            <field name="arma_ids">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="tipo"/>
+                                    <field name="modelo"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
