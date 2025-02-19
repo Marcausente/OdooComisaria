@@ -1,19 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
-class ModuloTrabajoMarc(models.Model):
-    _name = 'modulo_trabajo_marc.modulo_trabajo_marc'
-    _description = 'Modulo acerca de una comisaria'
+
+class Comisaria(models.Model):
+    _name = 'modulo_trabajo_marc.comisaria'
+    _description = 'Comisarías'
 
     name = fields.Char(string='Nombre', required=True)
-    value = fields.Integer(string='Valor')
-    description = fields.Text(string='Descripción')
-
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
-
+    direccion = fields.Text(string='Dirección')
+    telefono = fields.Char(string='Teléfono')
+    agente_ids = fields.One2many('modulo_trabajo_marc.agente', 'comisaria_id', string='Agentes Asignados')
