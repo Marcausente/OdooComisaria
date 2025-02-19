@@ -1,60 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <data>
-    <!-- explicit list view definition -->
-<!--
-    <record model="ir.ui.view" id="modulo_trabajo_marc.list">
-      <field name="name">modulo_trabajo_marc list</field>
-      <field name="model">modulo_trabajo_marc.modulo_trabajo_marc</field>
-      <field name="arch" type="xml">
-        <list>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
-        </list>
-      </field>
+  <!-- Vistas para Comisaría -->
+    <record id="view_comisaria_form" model="ir.ui.view">
+        <field name="name">modulo_trabajo_marc.comisaria.form</field>
+        <field name="model">modulo_trabajo_marc.comisaria</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="direccion"/>
+                        <field name="telefono"/>
+                    </group>
+                    <notebook>
+                        <page string="Agentes Asignados">
+                            <field name="agente_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
     </record>
--->
 
-    <!-- actions opening views on models -->
-<!--
-    <record model="ir.actions.act_window" id="modulo_trabajo_marc.action_window">
-      <field name="name">modulo_trabajo_marc window</field>
-      <field name="res_model">modulo_trabajo_marc.modulo_trabajo_marc</field>
-      <field name="view_mode">list,form</field>
+    <record id="view_comisaria_tree" model="ir.ui.view">
+        <field name="name">modulo_trabajo_marc.comisaria.tree</field>
+        <field name="model">modulo_trabajo_marc.comisaria</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="telefono"/>
+            </tree>
+        </field>
     </record>
--->
-
-    <!-- server action to the one above -->
-<!--
-    <record model="ir.actions.server" id="modulo_trabajo_marc.action_server">
-      <field name="name">modulo_trabajo_marc server</field>
-      <field name="model_id" ref="model_modulo_trabajo_marc_modulo_trabajo_marc"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "list,form",
-          "res_model": model._name,
-        }
-      </field>
-    </record>
--->
-
-    <!-- Top menu item -->
-<!--
-    <menuitem name="modulo_trabajo_marc" id="modulo_trabajo_marc.menu_root"/>
--->
-    <!-- menu categories -->
-<!--
-    <menuitem name="Menu 1" id="modulo_trabajo_marc.menu_1" parent="modulo_trabajo_marc.menu_root"/>
-    <menuitem name="Menu 2" id="modulo_trabajo_marc.menu_2" parent="modulo_trabajo_marc.menu_root"/>
--->
-    <!-- actions -->
-<!--
-    <menuitem name="List" id="modulo_trabajo_marc.menu_1_list" parent="modulo_trabajo_marc.menu_1"
-              action="modulo_trabajo_marc.action_window"/>
-    <menuitem name="Server to list" id="modulo_trabajo_marc" parent="modulo_trabajo_marc.menu_2"
-              action="modulo_trabajo_marc.action_server"/>
--->
-  </data>
-</odoo>
