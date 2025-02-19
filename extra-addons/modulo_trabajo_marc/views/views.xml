@@ -81,3 +81,17 @@
             </form>
         </field>
     </record>
+  
+      <record id="view_agente_tree" model="ir.ui.view">
+        <field name="name">modulo_trabajo_marc.agente.tree</field>
+        <field name="model">modulo_trabajo_marc.agente</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="numero_placa"/>
+                <field name="name"/>
+                <field name="rango_id"/>
+                <field name="comisaria_id"/>
+                <field name="activo"/>
+            </tree>
+        </field>
+    </record>
