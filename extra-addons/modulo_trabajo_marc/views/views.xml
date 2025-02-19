@@ -1,57 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Vistas para Comisaría -->
-    <record id="view_comisaria_form" model="ir.ui.view">
-        <field name="name">modulo_trabajo_marc.comisaria.form</field>
-        <field name="model">modulo_trabajo_marc.comisaria</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                        <field name="direccion"/>
-                        <field name="telefono"/>
-                    </group>
-                    <notebook>
-                        <page string="Agentes Asignados">
-                            <field name="agente_ids"/>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record id="view_comisaria_list" model="ir.ui.view">
-        <field name="name">modulo_trabajo_marc.comisaria.list</field>
-        <field name="model">modulo_trabajo_marc.comisaria</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="name"/>
-                <field name="telefono"/>
-            </tree>
-        </field>
-    </record>
-
     <!-- Acciones de Menú -->
     <record id="action_comisaria" model="ir.actions.act_window">
         <field name="name">Comisarías</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">modulo_trabajo_marc.comisaria</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">form</field>
     </record>
 
     <record id="action_agente" model="ir.actions.act_window">
         <field name="name">Agentes</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">modulo_trabajo_marc.agente</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">form</field>
     </record>
 
     <!-- Elementos de Menú -->
     <menuitem id="menu_policia_root" 
               name="Gestión Policial" 
-              web_icon="modulo_trabajo_marc,static/description/icon.png"
               sequence="10"/>
 
     <menuitem id="menu_policia_main" 
