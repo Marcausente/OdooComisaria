@@ -1,2 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_modulo_trabajo_marc_modulo_trabajo_marc,modulo_trabajo_marc.modulo_trabajo_marc,model_modulo_trabajo_marc_modulo_trabajo_marc,base.group_user,1,1,1,1
+access_modulo_trabajo_marc_comisaria,access.modulo.trabajo.marc.comisaria,model_modulo_trabajo_marc_comisaria,base.group_user,1,1,1,1
+access_modulo_trabajo_marc_rango,access.modulo.trabajo.marc.rango,model_modulo_trabajo_marc_rango,base.group_user,1,1,1,1
+access_modulo_trabajo_marc_division,access.modulo.trabajo.marc.division,model_modulo_trabajo_marc_division,base.group_user,1,1,1,1
+access_modulo_trabajo_marc_agente_division,access.modulo.trabajo.marc.agente.division,model_modulo_trabajo_marc_agente_division,base.group_user,1,1,1,1
+access_modulo_trabajo_marc_arma,access.modulo.trabajo.marc.arma,model_modulo_trabajo_marc_arma,base.group_user,1,1,1,1
+access_modulo_trabajo_marc_agente,access.modulo.trabajo.marc.agente,model_modulo_trabajo_marc_agente,base.group_user,1,1,1,1
