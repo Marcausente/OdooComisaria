@@ -45,9 +45,9 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="numero_placa"/>
-                        <field name="rango"/>
+                        <field name="name" placeholder="Nombre del agente"/>
+                        <field name="numero_placa" placeholder="Número de placa"/>
+                        <field name="rango" widget="selection"/>
                         <field name="comisaria_id"/>
                     </group>
                 </sheet>
