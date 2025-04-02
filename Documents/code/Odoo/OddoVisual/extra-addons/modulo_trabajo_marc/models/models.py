@@ -13,7 +13,7 @@ class Comisaria(models.Model):
     direccion = fields.Char(string='Dirección', tracking=True)
     telefono = fields.Char(string='Teléfono', tracking=True)
     
-    # Relación con los agentes
+    # Relación de agentes
     agente_ids = fields.One2many('modulo_trabajo_marc.agente', 'comisaria_id', string='Agentes asignados')
     
     # Estadísticas
