@@ -1,17 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Vistas para Comisaría -->
+    <!-- Vistas para Agentes -->
+    <record id="view_agente_tree" model="ir.ui.view">
+        <field name="name">modulo_trabajo_marc.agente.tree</field>
+        <field name="model">modulo_trabajo_marc.agente</field>
+        <field name="arch" type="xml">
+            <list string="Agentes">
+                <field name="name"/>
+                <field name="numero_placa"/>
+                <field name="rango_id"/>
+                <field name="comisaria_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_agente_form" model="ir.ui.view">
+        <field name="name">modulo_trabajo_marc.agente.form</field>
+        <field name="model">modulo_trabajo_marc.agente</field>
+        <field name="arch" type="xml">
+            <form string="Agente">
+                <sheet>
+                    <group>
+                        <field name="name" placeholder="Nombre completo"/>
+                        <field name="numero_placa" placeholder="Número de placa"/>
+                        <field name="rango_id"/>
+                        <field name="comisaria_id"/>
+                    </group>
+                    <notebook>
+                        <page string="Armas">
+                            <field name="arma_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="numero_serie"/>
+                                    <field name="tipo"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Divisiones">
+                            <field name="division_ids" widget="many2many_tags"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_agente_search" model="ir.ui.view">
+        <field name="name">modulo_trabajo_marc.agente.search</field>
+        <field name="model">modulo_trabajo_marc.agente</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="numero_placa"/>
+                <field name="rango_id"/>
+                <field name="comisaria_id"/>
+                <group expand="1" string="Group By">
+                    <filter string="Rango" name="groupby_rango" context="{'group_by': 'rango_id'}"/>
+                    <filter string="Comisaría" name="groupby_comisaria" context="{'group_by': 'comisaria_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Vistas para Comisarías -->
+    <record id="view_comisaria_tree" model="ir.ui.view">
+        <field name="name">modulo_trabajo_marc.comisaria.tree</field>
+        <field name="model">modulo_trabajo_marc.comisaria</field>
+        <field name="arch" type="xml">
+            <list string="Comisarías">
+                <field name="name"/>
+                <field name="direccion"/>
+                <field name="telefono"/>
+                <field name="agentes_count"/>
+            </list>
+        </field>
+    </record>
+
     <record id="view_comisaria_form" model="ir.ui.view">
         <field name="name">modulo_trabajo_marc.comisaria.form</field>
         <field name="model">modulo_trabajo_marc.comisaria</field>
-        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="Comisaría">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_agentes" type="object"
+                                class="oe_stat_button" icon="fa-user-secret">
+                            <field name="agentes_count" widget="statinfo" string="Agentes"/>
+                        </button>
+                    </div>
                     <group>
                         <field name="name"/>
                         <field name="direccion"/>
                         <field name="telefono"/>
+                    </group>
+                    <notebook>
+                        <page string="Agentes Asignados" readonly="1">
+                            <field name="agente_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="numero_placa"/>
+                                    <field name="rango_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vistas para Rangos -->
+    <record id="view_rango_tree" model="ir.ui.view">
+        <field name="name">modulo_trabajo_marc.rango.tree</field>
+        <field name="model">modulo_trabajo_marc.rango</field>
+        <field name="arch" type="xml">
+            <list string="Rangos">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="codigo"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_rango_form" model="ir.ui.view">
+        <field name="name">modulo_trabajo_marc.rango.form</field>
+        <field name="model">modulo_trabajo_marc.rango</field>
+        <field name="arch" type="xml">
+            <form string="Rango">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="codigo"/>
+                        <field name="sequence"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vistas para Divisiones -->
+    <record id="view_division_tree" model="ir.ui.view">
+        <field name="name">modulo_trabajo_marc.division.tree</field>
+        <field name="model">modulo_trabajo_marc.division</field>
+        <field name="arch" type="xml">
+            <list string="Divisiones">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_division_form" model="ir.ui.view">
+        <field name="name">modulo_trabajo_marc.division.form</field>
+        <field name="model">modulo_trabajo_marc.division</field>
+        <field name="arch" type="xml">
+            <form string="División">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="descripcion"/>
                     </group>
                     <notebook>
                         <page string="Agentes Asignados">
@@ -19,90 +175,89 @@
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
         </field>
     </record>
 
-    <record id="view_comisaria_list" model="ir.ui.view">
-        <field name="name">modulo_trabajo_marc.comisaria.list</field>
-        <field name="model">modulo_trabajo_marc.comisaria</field>
-        <field name="mode">primary</field>
+    <!-- Vistas para Armas -->
+    <record id="view_arma_tree" model="ir.ui.view">
+        <field name="name">modulo_trabajo_marc.arma.tree</field>
+        <field name="model">modulo_trabajo_marc.arma</field>
         <field name="arch" type="xml">
-            <list>
+            <list string="Armas">
                 <field name="name"/>
-                <field name="direccion"/>
-                <field name="telefono"/>
+                <field name="numero_serie"/>
+                <field name="tipo"/>
+                <field name="agente_id"/>
             </list>
         </field>
     </record>
 
-    <!-- Vistas para Agente -->
-    <record id="view_agente_form" model="ir.ui.view">
-        <field name="name">modulo_trabajo_marc.agente.form</field>
-        <field name="model">modulo_trabajo_marc.agente</field>
-        <field name="mode">primary</field>
+    <record id="view_arma_form" model="ir.ui.view">
+        <field name="name">modulo_trabajo_marc.arma.form</field>
+        <field name="model">modulo_trabajo_marc.arma</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="Arma">
                 <sheet>
                     <group>
-                        <field name="name" placeholder="Nombre del agente"/>
-                        <field name="numero_placa" placeholder="Número de placa"/>
-                        <field name="rango" widget="selection"/>
-                        <field name="comisaria_id"/>
+                        <field name="name"/>
+                        <field name="numero_serie"/>
+                        <field name="tipo"/>
+                        <field name="agente_id"/>
                     </group>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
         </field>
     </record>
 
-    <record id="view_agente_list" model="ir.ui.view">
-        <field name="name">modulo_trabajo_marc.agente.list</field>
-        <field name="model">modulo_trabajo_marc.agente</field>
-        <field name="mode">primary</field>
-        <field name="arch" type="xml">
-            <list>
-                <field name="name"/>
-                <field name="numero_placa"/>
-                <field name="rango"/>
-                <field name="comisaria_id"/>
-            </list>
-        </field>
-    </record>
-
-    <!-- Acciones de Menú -->
-    <record id="action_comisaria" model="ir.actions.act_window">
-        <field name="name">Comisarías</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">modulo_trabajo_marc.comisaria</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
+    <!-- Acciones -->
     <record id="action_agente" model="ir.actions.act_window">
         <field name="name">Agentes</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">modulo_trabajo_marc.agente</field>
         <field name="view_mode">list,form</field>
     </record>
 
-    <!-- Elementos de Menú -->
-    <menuitem id="menu_policia_root" 
-              name="Gestión Policial" 
-              sequence="10"/>
+    <record id="action_comisaria" model="ir.actions.act_window">
+        <field name="name">Comisarías</field>
+        <field name="res_model">modulo_trabajo_marc.comisaria</field>
+        <field name="view_mode">list,form</field>
+    </record>
 
-    <menuitem id="menu_policia_main" 
-              name="Policía" 
-              parent="menu_policia_root" 
-              sequence="10"/>
+    <record id="action_rango" model="ir.actions.act_window">
+        <field name="name">Rangos</field>
+        <field name="res_model">modulo_trabajo_marc.rango</field>
+        <field name="view_mode">list,form</field>
+    </record>
 
-    <menuitem id="menu_comisaria" 
-              name="Comisarías" 
-              parent="menu_policia_main" 
-              action="action_comisaria" 
-              sequence="10"/>
+    <record id="action_division" model="ir.actions.act_window">
+        <field name="name">Divisiones</field>
+        <field name="res_model">modulo_trabajo_marc.division</field>
+        <field name="view_mode">list,form</field>
+    </record>
 
-    <menuitem id="menu_agente" 
-              name="Agentes" 
-              parent="menu_policia_main" 
-              action="action_agente" 
-              sequence="20"/>
+    <record id="action_arma" model="ir.actions.act_window">
+        <field name="name">Armas</field>
+        <field name="res_model">modulo_trabajo_marc.arma</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Menús -->
+    <menuitem id="menu_comisaria_root" name="Gestión Policial" sequence="10"/>
+    
+    <menuitem id="menu_comisaria" name="Comisarías" parent="menu_comisaria_root" action="action_comisaria" sequence="10"/>
+    <menuitem id="menu_agente" name="Agentes" parent="menu_comisaria_root" action="action_agente" sequence="20"/>
+    <menuitem id="menu_configuracion" name="Configuración" parent="menu_comisaria_root" sequence="100"/>
+    <menuitem id="menu_rango" name="Rangos" parent="menu_configuracion" action="action_rango" sequence="10"/>
+    <menuitem id="menu_division" name="Divisiones" parent="menu_configuracion" action="action_division" sequence="20"/>
+    <menuitem id="menu_arma" name="Armamento" parent="menu_comisaria_root" action="action_arma" sequence="30"/>
 </odoo>

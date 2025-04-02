@@ -15,6 +15,7 @@
     'depends': ['base', 'mail'],
     'data': [
         'security/ir.model.access.csv',
+        'data/rango_data.xml',
         'views/views.xml',
     ],
     'application': True,

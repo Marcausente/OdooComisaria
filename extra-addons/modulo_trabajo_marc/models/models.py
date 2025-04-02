@@ -7,102 +7,103 @@ from odoo.exceptions import ValidationError
 class Comisaria(models.Model):
     _name = 'modulo_trabajo_marc.comisaria'
     _description = 'Comisarías'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char(string='Nombre', required=True)
-    direccion = fields.Text(string='Dirección')
-    telefono = fields.Char(string='Teléfono')
-    agente_ids = fields.One2many('modulo_trabajo_marc.agente', 'comisaria_id', string='Agentes Asignados')
+    name = fields.Char(string='Nombre de la Comisaría', required=True, tracking=True)
+    direccion = fields.Char(string='Dirección', tracking=True)
+    telefono = fields.Char(string='Teléfono', tracking=True)
+    
+    # Relación de agentes
+    agente_ids = fields.One2many('modulo_trabajo_marc.agente', 'comisaria_id', string='Agentes asignados')
+    
+    # Estadísticas
+    agentes_count = fields.Integer(string='Número de agentes', compute='_compute_agentes_count')
+    
+    @api.depends('agente_ids')
+    def _compute_agentes_count(self):
+        for comisaria in self:
+            comisaria.agentes_count = len(comisaria.agente_ids)
+
+    def action_view_agentes(self):
+        self.ensure_one()
+        return {
+            'name': 'Agentes de ' + self.name,
+            'view_mode': 'list,form',
+            'res_model': 'modulo_trabajo_marc.agente',
+            'domain': [('comisaria_id', '=', self.id)],
+            'type': 'ir.actions.act_window',
+            'context': {'default_comisaria_id': self.id, 'create': False}
+        }
 
 class Rango(models.Model):
     _name = 'modulo_trabajo_marc.rango'
     _description = 'Rangos policiales'
-    _order = 'nivel desc'
+    _order = 'sequence'
 
-    name = fields.Selection([
-        ('capitan', 'Capitán'),
-        ('teniente', 'Teniente'),
-        ('detective_iii', 'Detective III'),
-        ('sargento_ii', 'Sargento II'),
-        ('detective_ii', 'Detective II'),
-        ('sargento_i', 'Sargento I'),
-        ('detective_i', 'Detective I'),
-        ('oficial_iii', 'Oficial III'),
-        ('oficial_ii', 'Oficial II'),
-        ('oficial_i', 'Oficial I'),
-        ('oficial_practicas', 'Oficial en prácticas'),
-    ], string='Rango', required=True)
-    nivel = fields.Integer(string='Nivel Jerárquico', compute='_compute_nivel', store=True)
+    name = fields.Char(string='Nombre del Rango', required=True)
+    codigo = fields.Char(string='Código interno', required=True)
+    sequence = fields.Integer(string='Secuencia', default=10, 
+                             help='Determina el orden de los rangos. Los números más bajos aparecen primero.')
 
-    @api.depends('name')
-    def _compute_nivel(self):
-        rangos_nivel = {
-            'capitan': 11,
-            'teniente': 10,
-            'detective_iii': 9,
-            'sargento_ii': 8,
-            'detective_ii': 7,
-            'sargento_i': 6,
-            'detective_i': 5,
-            'oficial_iii': 4,
-            'oficial_ii': 3,
-            'oficial_i': 2,
-            'oficial_practicas': 1,
-        }
+    # Relación inversa con Agentes
+    agente_ids = fields.One2many('modulo_trabajo_marc.agente', 'rango_id', string='Agentes con este rango')
+
+    def name_get(self):
+        result = []
         for rango in self:
-            rango.nivel = rangos_nivel.get(rango.name, 0)
+            result.append((rango.id, rango.name))
+        return result
 
 class Division(models.Model):
     _name = 'modulo_trabajo_marc.division'
     _description = 'Divisiones policiales'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name = fields.Selection([
-        ('relaciones_publicas', 'Relaciones Públicas'),
-        ('robos_homicidios', 'Robos y Homicidios'),
-        ('delitos_graves', 'Delitos Graves'),
-        ('delitos_violencia', 'Delitos con Violencia'),
-        ('narcoticos', 'Narcóticos'),
-        ('swat', 'S.W.A.T'),
-        ('air_support', 'Air Support Division'),
-        ('corrections', 'Department of Corrections'),
-        ('justice', 'Department of Justice'),
-        ('trafico', 'Tráfico'),
-        ('asuntos_internos', 'Asuntos Internos'),
-        ('forestales', 'Forestales'),
-    ], string='División', required=True)
+    name = fields.Char(string='Nombre división', required=True)
     descripcion = fields.Text(string='Descripción')
+    
+    # Relación con agentes
+    agente_ids = fields.Many2many(
+        'modulo_trabajo_marc.agente',
+        'agente_division_rel',
+        'division_id',
+        'agente_id',
+        string='Agentes asignados')
+        
+    # Para seguimiento de rangos específicos en cada división
+    agente_division_ids = fields.One2many('modulo_trabajo_marc.agente_division', 'division_id', string='Rangos en división')
 
 class AgenteDivision(models.Model):
     _name = 'modulo_trabajo_marc.agente_division'
-    _description = 'Relación Agente-División'
-
-    agente_id = fields.Many2one('modulo_trabajo_marc.agente', string='Agente', required=True)
-    division_id = fields.Many2one('modulo_trabajo_marc.division', string='División', required=True)
-    rango_division = fields.Selection([
-        ('jefe', 'Jefe de División'),
-        ('subjefe', 'Subjefe'),
-        ('supervisor', 'Supervisor'),
-        ('investigador', 'Investigador'),
-        ('agente', 'Agente'),
-    ], string='Rango en División', required=True)
+    _description = 'Rango en división específica'
+    
+    agente_id = fields.Many2one('modulo_trabajo_marc.agente', string='Agente', required=True, ondelete='cascade')
+    division_id = fields.Many2one('modulo_trabajo_marc.division', string='División', required=True, ondelete='cascade')
+    rango_division = fields.Char(string='Rango en la división')
+    
+    _sql_constraints = [
+        ('agente_division_uniq', 'unique(agente_id, division_id)', 'El agente ya tiene un registro en esta división!')
+    ]
 
 class Arma(models.Model):
     _name = 'modulo_trabajo_marc.arma'
-    _description = 'Armas registradas'
+    _description = 'Registro de armas'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char(string='Número de Serie', required=True)
+    name = fields.Char(string='Nombre/Modelo', required=True)
+    numero_serie = fields.Char(string='Número de serie', required=True, tracking=True)
     tipo = fields.Selection([
         ('pistola', 'Pistola'),
         ('rifle', 'Rifle'),
         ('escopeta', 'Escopeta'),
-    ], string='Tipo de Arma', required=True)
-    modelo = fields.Char(string='Modelo', required=True)
-    agente_id = fields.Many2one('modulo_trabajo_marc.agente', string='Agente Asignado')
-
-    @api.constrains('name')
-    def _check_numero_serie(self):
-        for arma in self:
-            if arma.name and len(arma.name) != 8:
-                raise ValidationError(_('El número de serie debe tener exactamente 8 caracteres.'))
+        ('otro', 'Otro')
+    ], string='Tipo de arma', default='pistola', required=True, tracking=True)
+    
+    agente_id = fields.Many2one('modulo_trabajo_marc.agente', string='Asignada a', tracking=True, ondelete='restrict')
+    
+    _sql_constraints = [
+        ('serie_uniq', 'unique(numero_serie)', 'El número de serie del arma debe ser único!')
+    ]
 
 class Agente(models.Model):
     _name = 'modulo_trabajo_marc.agente'
@@ -110,28 +111,31 @@ class Agente(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(string='Nombre Completo', required=True, tracking=True)
-    numero_placa = fields.Char(string='Número de Placa', required=True, tracking=True)
-    rango = fields.Selection([
-        ('capitan', 'Capitán'),
-        ('teniente', 'Teniente'),
-        ('detective_iii', 'Detective III'),
-        ('sargento_ii', 'Sargento II'),
-        ('detective_ii', 'Detective II'),
-        ('sargento_i', 'Sargento I'),
-        ('detective_i', 'Detective I'),
-        ('oficial_iii', 'Oficial III'),
-        ('oficial_ii', 'Oficial II'),
-        ('oficial_i', 'Oficial I'),
-        ('oficial_practicas', 'Oficial en Prácticas')
-    ], string='Rango', required=True, default='oficial_practicas')
-    comisaria_id = fields.Many2one('modulo_trabajo_marc.comisaria', string='Comisaría', required=True)
-    rango_id = fields.Many2one('modulo_trabajo_marc.rango', string='Rango', required=True, tracking=True)
-    division_ids = fields.One2many('modulo_trabajo_marc.agente_division', 'agente_id', string='Divisiones')
-    arma_ids = fields.One2many('modulo_trabajo_marc.arma', 'agente_id', string='Armas Asignadas')
-    activo = fields.Boolean(string='Activo', default=True, tracking=True)
-
+    numero_placa = fields.Char(string='Número de Placa', required=True, size=3, tracking=True)
+    
+    # Relaciones
+    comisaria_id = fields.Many2one('modulo_trabajo_marc.comisaria', string='Comisaría asignada', 
+                                  required=True, tracking=True, ondelete='restrict')
+    rango_id = fields.Many2one('modulo_trabajo_marc.rango', string='Rango', 
+                              required=True, tracking=True, ondelete='restrict')
+    
+    # Relación con armas
+    arma_ids = fields.One2many('modulo_trabajo_marc.arma', 'agente_id', string='Armas asignadas')
+    
+    # Divisiones
+    division_ids = fields.Many2many(
+        'modulo_trabajo_marc.division',
+        'agente_division_rel',
+        'agente_id',
+        'division_id',
+        string='Divisiones asignadas')
+        
+    _sql_constraints = [
+        ('placa_uniq', 'unique(numero_placa)', 'El número de placa debe ser único!')
+    ]
+    
     @api.constrains('numero_placa')
     def _check_numero_placa(self):
-        for agente in self:
-            if not agente.numero_placa.isdigit() or len(agente.numero_placa) != 3:
-                raise ValidationError(_('El número de placa debe ser de exactamente 3 dígitos.'))
+        for record in self:
+            if not record.numero_placa.isdigit() or len(record.numero_placa) != 3:
+                raise ValidationError(_("El número de placa debe contener exactamente 3 dígitos."))
